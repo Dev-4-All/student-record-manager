@@ -234,6 +234,17 @@ class StudentRecordManager:
         print(f"Highest Marks: {self.__highest_marks()}")
         print(f"Average Marks: {self.__average_marks()}")
 
+    def clear_all_records(self) -> None:
+        confirmation = input("Would like to clear all existing records? [Y/N]\n").upper()
+        
+        if confirmation == "Y":
+            self.__records.clear()
+            print("Operation Successful!")
+        elif confirmation == "N":
+            print("Records not cleared!")
+        else:
+            print("Invalid input. Operation Unsuccessful!")
+
     @staticmethod
     def __print_record_info(name: str, marks: int, phone: str) -> None:
         print(f"Name: {name}, Marks: {marks}, Phone: {phone}.")

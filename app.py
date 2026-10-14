@@ -14,7 +14,8 @@ def display_options():
     print("6) Update Marks")
     print("7) Update Phone")
     print("8) Display Marks Statistics")
-    print("9) Exit")
+    print("9) Clear All Records")
+    print("10) Exit")
 
 
 def main():
@@ -29,6 +30,7 @@ def main():
         "6": manager.update_marks,
         "7": manager.update_phone,
         "8": manager.display_marks_statistics,
+        "9": manager.clear_all_records,
     }
 
     print("Welcome to Py Student Record Manager!")
@@ -39,7 +41,7 @@ def main():
         choice = input("Choose an option: ")
         if choice in operations:
             operations[choice]()
-        elif choice == "9":
+        elif choice == "10":
             manager.save_records()
             break
         else:
