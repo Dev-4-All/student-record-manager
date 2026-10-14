@@ -135,9 +135,7 @@ class StudentRecordManager:
             return
 
         name: str = StudentRecordManager.__input_name("Enter name: ")
-        matching_records: list[tuple[int, Student]] | None = self.__get_matches(
-            name
-        )
+        matching_records: list[tuple[int, Student]] | None = self.__get_matches(name)
 
         if matching_records:
             for record_tuple in matching_records:
@@ -161,6 +159,22 @@ class StudentRecordManager:
             dump(self.__records, file)
         print("Records saved Successfully!")
 
+    def update_name(self) -> None:
+        if not self.__records:
+            print("No records to update anything")
+            return
+
+        old_name: str = StudentRecordManager.__input_name("Enter name: ")
+        exact_match: tuple[int, Student] | None = self.__get_exact_match(old_name)
+
+        if exact_match:
+            _, student = exact_match
+
+            new_name: str = self.__input_name("Enter new name: ")
+            student.set_name(new_name)
+
+            print(f"Name updated from {old_name} to {new_name}")
+
     def update_marks(self) -> None:
         if not self.__records:
             print("No records to update anything")
@@ -171,16 +185,39 @@ class StudentRecordManager:
 
         if exact_match:
             old_idx, student = exact_match
-            old_marks = student.get_marks()
 
+            old_marks = student.get_marks()
             new_marks: int = StudentRecordManager.__input_marks("Enter new marks: ")
-            new_idx = self.__get_insertion_index(new_marks)
             student.set_marks(new_marks)
 
             self.__records.pop(old_idx)
+            new_idx = self.__get_insertion_index(new_marks)
             self.__records.insert(new_idx, student)
 
             print(f"Marks updated from {old_marks} to {new_marks}")
+
+    def update_phone(self) -> None:
+        if not self.__records:
+            print("No records to update anything")
+            return
+
+        name: str = StudentRecordManager.__input_name("Enter name: ")
+        exact_match: tuple[int, Student] | None = self.__get_exact_match(name)
+
+        if exact_match:
+            _, student = exact_match
+
+            old_phone: str = student.get_phone()
+
+            existing_phones: list[str] = [
+                record.get_phone() for record in self.__records
+            ]
+            new_phone: str = self.__input_phone(
+                "Enter new phone number: ", existing_phones
+            )
+            student.set_phone(new_phone)
+
+            print(f"Name updated from {old_phone} to {new_phone}")
 
     def display_marks_statistics(self) -> None:
         if not self.__records:

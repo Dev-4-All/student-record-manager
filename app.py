@@ -10,9 +10,11 @@ def display_options():
     print("2) Delete Record")
     print("3) Search Record")
     print("4) Display All Records")
-    print("5) Update Marks")
-    print("6) Display Marks Statistics")
-    print("7) Exit")
+    print("5) Update Name")
+    print("6) Update Marks")
+    print("7) Update Phone")
+    print("8) Display Marks Statistics")
+    print("9) Exit")
 
 
 def main():
@@ -23,8 +25,10 @@ def main():
         "2": manager.delete_record,
         "3": manager.search_record,
         "4": manager.display_all_records,
-        "5": manager.update_marks,
-        "6": manager.display_marks_statistics,
+        "5": manager.update_name,
+        "6": manager.update_marks,
+        "7": manager.update_phone,
+        "8": manager.display_marks_statistics,
     }
 
     print("Welcome to Py Student Record Manager!")
@@ -35,7 +39,7 @@ def main():
         choice = input("Choose an option: ")
         if choice in operations:
             operations[choice]()
-        elif choice == "7":
+        elif choice == "9":
             manager.save_records()
             break
         else:
