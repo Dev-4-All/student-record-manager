@@ -233,14 +233,16 @@ class StudentRecordManager:
             old_phone: str = student.get_phone()
 
             existing_phones: list[str] = [
-                record.get_phone() for record in self.__records
+                record.get_phone()
+                for record in self.__records
+                if record.get_phone() != old_phone
             ]
             new_phone: str = self.__input_phone(
                 "Enter new phone number: ", existing_phones
             )
             student.set_phone(new_phone)
 
-            print(f"Name updated from {old_phone} to {new_phone}")
+            print(f"Phone updated from {old_phone} to {new_phone}")
 
     def display_marks_statistics(self) -> None:
         if not self.__records:
