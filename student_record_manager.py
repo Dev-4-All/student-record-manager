@@ -125,9 +125,15 @@ class StudentRecordManager:
         exact_match: tuple[int, Student] | None = self.__get_exact_match(name)
 
         if exact_match:
-            record_idx, _ = exact_match
-            self.__records.pop(record_idx)
-            print("Operation Successful!")
+            confirmation = input("Would like to delete this record? [Y/N]\n").upper()
+            if confirmation == "Y":
+                record_idx, _ = exact_match
+                self.__records.pop(record_idx)
+                print("Operation Successful!")
+            elif confirmation == "N":
+                print("Record not deleted!")
+            else:
+                print("Invalid input. Operation Unsuccessful!")
 
     def search_record(self) -> None:
         if not self.__records:
@@ -237,7 +243,7 @@ class StudentRecordManager:
         while True:
             name = input(prompt)
             if StudentRecordManager.__is_name_valid(name):
-                return name
+                return " ".join(name.split()).title()
             else:
                 print("Name cannot be empty and must contain only letters and spaces")
 
