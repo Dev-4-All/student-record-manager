@@ -153,12 +153,8 @@ class StudentRecordManager:
             new_idx = self.__get_insertion_index(new_marks)
             student.set_marks(new_marks)
 
-            while old_idx != new_idx:
-                self.__records[old_idx], self.__records[old_idx + 1] = (
-                    self.__records[old_idx + 1],
-                    self.__records[old_idx],
-                )
-                old_idx += 1
+            self.__records.pop(old_idx)
+            self.__records.insert(new_idx, student)
 
             print(f"Marks updated from {old_marks} to {new_marks}")
 
@@ -190,7 +186,7 @@ class StudentRecordManager:
                 else:
                     print("Marks are out of the valid range")
             except ValueError:
-                print("Please enter a valid number")
+                print("Please enter a valid integral number")
 
     @staticmethod
     def input_phone(prompt: str, existing_phones: list[str]) -> str:
