@@ -160,10 +160,27 @@ class StudentRecordManager:
                 record.get_name(), record.get_marks(), record.get_phone()
             )
 
+    def clear_all_records(self) -> None:
+        if not self.__records:
+            print("No records to clear anything")
+            return
+
+        confirmation = input(
+            "Would like to clear all existing records? [Y/N]\n"
+        ).upper()
+
+        if confirmation == "Y":
+            self.__records.clear()
+            print("Operation Successful!")
+        elif confirmation == "N":
+            print("Records not cleared!")
+        else:
+            print("Invalid input. Operation Unsuccessful!")
+
     def save_records(self) -> None:
         with open(self.__record_file, "wb") as file:
             dump(self.__records, file)
-        print("Records saved Successfully!")
+        print("\nRecords saved Successfully!")
 
     def update_name(self) -> None:
         if not self.__records:
@@ -233,17 +250,6 @@ class StudentRecordManager:
         print(f"Lowest Marks: {self.__lowest_marks()}")
         print(f"Highest Marks: {self.__highest_marks()}")
         print(f"Average Marks: {self.__average_marks()}")
-
-    def clear_all_records(self) -> None:
-        confirmation = input("Would like to clear all existing records? [Y/N]\n").upper()
-        
-        if confirmation == "Y":
-            self.__records.clear()
-            print("Operation Successful!")
-        elif confirmation == "N":
-            print("Records not cleared!")
-        else:
-            print("Invalid input. Operation Unsuccessful!")
 
     @staticmethod
     def __print_record_info(name: str, marks: int, phone: str) -> None:

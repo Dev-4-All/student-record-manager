@@ -33,7 +33,7 @@ def main():
         "9": manager.clear_all_records,
     }
 
-    print("Welcome to Py Student Record Manager!")
+    print("Welcome to Py Student Record Manager!\n")
 
     while True:
         display_options()
@@ -41,11 +41,12 @@ def main():
         choice = input("Choose an option: ")
         if choice in operations:
             operations[choice]()
+            print()
         elif choice == "10":
             manager.save_records()
             break
         else:
-            print("Please enter a valid choice")
+            print("Please enter a valid choice\n")
 
 
 if __name__ == "__main__":
