@@ -45,14 +45,19 @@ class StudentRecordManager:
             if no_of_matches == 1:
                 print("Found 1 matching record:")
                 exact_match = matches[0]
-                print(
-                    f"Name: {exact_match[1].get_name()}, Marks: {exact_match[1].get_marks()}."
+                StudentRecordManager.__print_record_info(
+                    exact_match[1].get_name(),
+                    exact_match[1].get_marks(),
+                    exact_match[1].get_phone(),
                 )
             else:
                 print(f"Found {len(matches)} matching records:")
                 for idx, exact_match in enumerate(matches, start=1):
-                    print(
-                        f"{idx}) Name: {exact_match[1].get_name()}, Marks: {exact_match[1].get_marks()}."
+                    print(f"{idx}) ", end="")
+                    StudentRecordManager.__print_record_info(
+                        exact_match[1].get_name(),
+                        exact_match[1].get_marks(),
+                        exact_match[1].get_phone(),
                     )
 
                 while True:
@@ -98,10 +103,10 @@ class StudentRecordManager:
         return sum(marks) / len(marks)
 
     def add_record(self) -> None:
-        name: str = StudentRecordManager.input_name("Enter name: ")
-        marks: int = StudentRecordManager.input_marks("Enter marks: ")
+        name: str = StudentRecordManager.__input_name("Enter name: ")
+        marks: int = StudentRecordManager.__input_marks("Enter marks: ")
         existing_phones: list[str] = [record.get_phone() for record in self.__records]
-        phone: str = StudentRecordManager.input_phone(
+        phone: str = StudentRecordManager.__input_phone(
             "Enter phone number: ", existing_phones
         )
 
@@ -116,7 +121,7 @@ class StudentRecordManager:
             print("No records to delete anything")
             return
 
-        name: str = StudentRecordManager.input_name("Enter name: ")
+        name: str = StudentRecordManager.__input_name("Enter name: ")
         exact_match: tuple[int, Student] | None = self.__get_exact_match(name)
 
         if exact_match:
@@ -124,13 +129,32 @@ class StudentRecordManager:
             self.__records.pop(record_idx)
             print("Operation Successful!")
 
+    def search_record(self) -> None:
+        if not self.__records:
+            print("No records to search anything")
+            return
+
+        name: str = StudentRecordManager.__input_name("Enter name: ")
+        matching_records: list[tuple[int, Student]] | None = self.__get_matches(
+            name
+        )
+
+        if matching_records:
+            for record_tuple in matching_records:
+                _, record = record_tuple
+                StudentRecordManager.__print_record_info(
+                    record.get_name(), record.get_marks(), record.get_phone()
+                )
+
     def display_all_records(self) -> None:
         if not self.__records:
             print("No records to display anything")
             return
 
         for record in self.__records:
-            print(f"Name: {record.get_name()}, Marks: {record.get_marks()}.")
+            StudentRecordManager.__print_record_info(
+                record.get_name(), record.get_marks(), record.get_phone()
+            )
 
     def save_records(self) -> None:
         with open(self.__record_file, "wb") as file:
@@ -142,14 +166,14 @@ class StudentRecordManager:
             print("No records to update anything")
             return
 
-        name: str = StudentRecordManager.input_name("Enter name: ")
+        name: str = StudentRecordManager.__input_name("Enter name: ")
         exact_match: tuple[int, Student] | None = self.__get_exact_match(name)
 
         if exact_match:
             old_idx, student = exact_match
             old_marks = student.get_marks()
 
-            new_marks: int = StudentRecordManager.input_marks("Enter new marks: ")
+            new_marks: int = StudentRecordManager.__input_marks("Enter new marks: ")
             new_idx = self.__get_insertion_index(new_marks)
             student.set_marks(new_marks)
 
@@ -168,20 +192,24 @@ class StudentRecordManager:
         print(f"Average Marks: {self.__average_marks()}")
 
     @staticmethod
-    def input_name(prompt: str) -> str:
+    def __print_record_info(name: str, marks: int, phone: str) -> None:
+        print(f"Name: {name}, Marks: {marks}, Phone: {phone}.")
+
+    @staticmethod
+    def __input_name(prompt: str) -> str:
         while True:
             name = input(prompt)
-            if StudentRecordManager.is_name_valid(name):
+            if StudentRecordManager.__is_name_valid(name):
                 return name
             else:
                 print("Name cannot be empty and must contain only letters and spaces")
 
     @staticmethod
-    def input_marks(prompt: str) -> int:
+    def __input_marks(prompt: str) -> int:
         while True:
             try:
                 marks = int(input(prompt))
-                if StudentRecordManager.is_marks_valid(marks):
+                if StudentRecordManager.__is_marks_valid(marks):
                     return marks
                 else:
                     print("Marks are out of the valid range")
@@ -189,11 +217,11 @@ class StudentRecordManager:
                 print("Please enter a valid integral number")
 
     @staticmethod
-    def input_phone(prompt: str, existing_phones: list[str]) -> str:
+    def __input_phone(prompt: str, existing_phones: list[str]) -> str:
         while True:
             phone = input(prompt)
             if (
-                StudentRecordManager.is_phone_valid(phone)
+                StudentRecordManager.__is_phone_valid(phone)
                 and phone not in existing_phones
             ):
                 return phone
@@ -203,7 +231,7 @@ class StudentRecordManager:
                 )
 
     @staticmethod
-    def is_name_valid(name: str) -> bool:
+    def __is_name_valid(name: str) -> bool:
         if not name.strip():
             return False
 
@@ -214,11 +242,11 @@ class StudentRecordManager:
         return True
 
     @staticmethod
-    def is_marks_valid(marks: int) -> bool:
+    def __is_marks_valid(marks: int) -> bool:
         return 0 <= marks <= 100
 
     @staticmethod
-    def is_phone_valid(phone: str) -> bool:
+    def __is_phone_valid(phone: str) -> bool:
         if len(phone) != 10:
             return False
 

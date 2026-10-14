@@ -8,10 +8,11 @@ RECORD_FILE: Final = "student_record.pickle"
 def display_options():
     print("1) Add Record")
     print("2) Delete Record")
-    print("3) Display All Records")
-    print("4) Update Marks")
-    print("5) Display Marks Statistics")
-    print("6) Exit")
+    print("3) Search Record")
+    print("4) Display All Records")
+    print("5) Update Marks")
+    print("6) Display Marks Statistics")
+    print("7) Exit")
 
 
 def main():
@@ -20,9 +21,10 @@ def main():
     operations = {
         "1": manager.add_record,
         "2": manager.delete_record,
-        "3": manager.display_all_records,
-        "4": manager.update_marks,
-        "5": manager.display_marks_statistics,
+        "3": manager.search_record,
+        "4": manager.display_all_records,
+        "5": manager.update_marks,
+        "6": manager.display_marks_statistics,
     }
 
     print("Welcome to Py Student Record Manager!")
@@ -33,7 +35,7 @@ def main():
         choice = input("Choose an option: ")
         if choice in operations:
             operations[choice]()
-        elif choice == "6":
+        elif choice == "7":
             manager.save_records()
             break
         else:
